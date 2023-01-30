@@ -9,15 +9,17 @@
     "lint": "next lint",
     "api:start": "supabase start",
     "api:stop": "supabase stop",
-    "db:migrate:prisma": "dotenv -e .env.local -- npx prisma migrate dev",
+    "db:migrate:prisma": "dotenv -e .env.local -- npx prisma migrate dev --schema=./src/backend/prisma/schema.prisma",
     "db:migrate:supabase": "supabase db diff migration_name -f",
     "db:migrate:local": "yarn db:migrate:prisma && yarn db:migrate:supabase",
     "db:push:prod": "supabase db push",
     "supabase:link": "supabase link --project-ref",
-    "supabase:get-remote": "supabase db remote commit"
+    "supabase:get-remote": "supabase db remote commit",
+    "prisma:generate": "dotenv -e .env.local -- npx prisma generate --schema=./src/backend/prisma/schema.prisma"
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "@prisma/client": "^4.9.0",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0"
@@ -29,6 +31,7 @@
     "@types/react-dom": "18.0.10",
     "@typescript-eslint/eslint-plugin": "^5.45.0",
     "@typescript-eslint/parser": "^5.45.0",
+    "dotenv-cli": "^7.0.0",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
     "eslint-config-prettier": "^8.5.0",
@@ -39,6 +42,7 @@
     "jest-environment-jsdom": "^29.3.1",
     "prettier": "^2.7.1",
     "prettier-plugin-organize-imports": "^3.2.1",
+    "prisma": "^4.9.0",
     "typescript": "4.9.4"
   }
 }
