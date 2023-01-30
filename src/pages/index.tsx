@@ -1,3 +1,4 @@
+import { useAllUsersQuery } from '@/domain/graphql/generated'
 import styles from '@/styles/Home.module.css'
 import { Inter } from '@next/font/google'
 import { signIn, useSession } from 'next-auth/react'
@@ -8,6 +9,10 @@ const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
   const { data: session } = useSession()
+  // TODO: Remove, just for testing
+  const [{ data: users, error, fetching }] = useAllUsersQuery()
+  console.log('users', users, 'error', error, 'fetching', fetching)
+
   return (
     <>
       <Head>
