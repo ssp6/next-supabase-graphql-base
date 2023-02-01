@@ -1,7 +1,9 @@
 import SchemaBuilder from '@pothos/core'
 import PrismaPlugin from '@pothos/plugin-prisma'
-import type PrismaTypes from '@pothos/plugin-prisma/generated'
+import { applyMiddleware } from 'graphql-middleware'
+import { permissions } from '../permissions'
 import prisma from '../prisma'
+import PrismaTypes from '../prisma/pothos-types'
 import { addUserToGraphql } from './user'
 
 /**
@@ -21,8 +23,8 @@ export type BuilderType = typeof builder
 builder.queryType({})
 
 // TODO: Uncomment when create first user mutation is implemented
-// builder.mutationType({})
+builder.mutationType({})
 
 addUserToGraphql(builder)
 
-export const schema = builder.toSchema()
+export const schema = applyMiddleware(builder.toSchema(), permissions)

@@ -24,4 +24,24 @@ export const addUserToGraphql = (builder: BuilderType) => {
         }),
     }),
   )
+
+  builder.mutationField('updateUserName', (t) =>
+    t.prismaField({
+      type: 'User',
+      args: {
+        name: t.arg.string({ required: true }),
+      },
+      resolve: async (query, _parent, args, _info) => {
+        return prisma.user.update({
+          ...query,
+          where: {
+            id: args.name,
+          },
+          data: {
+            name: args.name,
+          },
+        })
+      },
+    }),
+  )
 }

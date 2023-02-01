@@ -16,6 +16,8 @@ generator client {
 
 generator pothos {
   provider = "prisma-pothos-types"
+  clientOutput = "@prisma/client"
+  output = "./pothos-types.ts"
 }
 
 model Account {
