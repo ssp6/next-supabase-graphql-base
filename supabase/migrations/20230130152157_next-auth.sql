@@ -1,3 +1,5 @@
+create DATABASE postgres_shadow;
+
 create table "public"."Account" (
     "id" text not null,
     "userId" text not null,

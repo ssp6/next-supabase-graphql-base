@@ -1,3 +1,4 @@
+import { getUserIdFromRequest } from '../auth/getUserIdFromRequest'
 import prisma from '../prisma'
 import type { BuilderType } from './schema'
 
@@ -11,34 +12,45 @@ export const addUserToGraphql = (builder: BuilderType) => {
       id: t.exposeID('id'),
       name: t.exposeString('name', { nullable: true }),
       email: t.exposeString('email', { nullable: true }),
-      image: t.exposeString('image', { nullable: true }),
+      createdAt: t.expose('createdAt', {
+        type: 'Date',
+      }),
     }),
   })
 
-  builder.queryField('users', (t) =>
+  builder.queryField('me', (t) =>
     t.prismaField({
-      type: ['User'],
-      resolve: async (query, _parent, _args, _info) =>
-        prisma.user.findMany({
+      type: 'User',
+      resolve: async (query, _parent, _args, context, _info) => {
+        const userId = await getUserIdFromRequest(context)
+        return prisma.user.findUniqueOrThrow({
           ...query,
-        }),
+          where: {
+            id: userId!,
+          },
+        })
+      },
     }),
   )
 
-  builder.mutationField('updateUserName', (t) =>
+  builder.mutationField('updateUser', (t) =>
     t.prismaField({
       type: 'User',
       args: {
-        name: t.arg.string({ required: true }),
+        name: t.arg.string({ required: false }),
+        email: t.arg.string({ required: false }),
       },
-      resolve: async (query, _parent, args, _info) => {
+      resolve: async (query, _parent, args, context, _info) => {
+        const userId = await getUserIdFromRequest(context)
+        if (!userId) throw new Error('Not authorized!')
         return prisma.user.update({
           ...query,
           where: {
-            id: args.name,
+            id: userId,
           },
           data: {
-            name: args.name,
+            ...(args.name && { name: args.name }),
+            ...(args.email && { email: args.email }),
           },
         })
       },
