@@ -6,10 +6,5 @@ export const getUserIdFromRequest = async (context: any) => {
     secret: process.env.NEXTAUTH_SECRET,
   })
 
-  if (process.env.NODE_ENV === 'development') {
-    const rawToken = context?.req?.cookies?.['next-auth.session-token']
-    console.log('rawToken', rawToken)
-  }
-
   return token?.sub
 }

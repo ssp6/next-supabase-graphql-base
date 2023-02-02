@@ -1,0 +1,8 @@
+mutation CreateAssignment($name: String!, $pdfFileUrl: String!) {
+    createAssignment(name: $name, pdfFileUrl: $pdfFileUrl) {
+        id
+        name
+        pdfFileUrl
+        createdAt
+    }
+}

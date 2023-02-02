@@ -5,6 +5,7 @@ import { DateResolver } from 'graphql-scalars'
 import { permissions } from '../permissions'
 import prisma from '../prisma'
 import PrismaTypes from '../prisma/pothos-types'
+import { addAssignmentToGraphql } from './assignment'
 import { addUserToGraphql } from './user'
 
 /**
@@ -35,5 +36,6 @@ builder.mutationType({})
 builder.addScalarType('Date', DateResolver, {})
 
 addUserToGraphql(builder)
+addAssignmentToGraphql(builder)
 
 export const schema = applyMiddleware(builder.toSchema(), permissions)

@@ -15,9 +15,9 @@ generator client {
 }
 
 generator pothos {
-  provider = "prisma-pothos-types"
+  provider     = "prisma-pothos-types"
   clientOutput = "@prisma/client"
-  output = "./pothos-types.ts"
+  output       = "./pothos-types.ts"
 }
 
 model Account {
@@ -48,15 +48,16 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String       @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?      @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt @default(now())
+  updatedAt     DateTime     @default(now()) @updatedAt
+  Assignment    Assignment[]
 }
 
 model VerificationToken {
@@ -65,4 +66,14 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Assignment {
+  id         String   @id @default(cuid())
+  name       String
+  pdfFileUrl String
+  creatorId  String
+  creator    User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt @default(now())
 }

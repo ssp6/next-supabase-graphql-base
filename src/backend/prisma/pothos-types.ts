@@ -1,5 +1,5 @@
 /* eslint-disable */
-import type { Prisma, Account, Session, User, VerificationToken } from "@prisma/client";
+import type { Prisma, Account, Session, User, VerificationToken, Assignment } from "@prisma/client";
 export default interface PrismaTypes {
     Account: {
         Name: "Account";
@@ -43,8 +43,8 @@ export default interface PrismaTypes {
         OrderBy: Prisma.UserOrderByWithRelationInput;
         WhereUnique: Prisma.UserWhereUniqueInput;
         Where: Prisma.UserWhereInput;
-        RelationName: "accounts" | "sessions";
-        ListRelations: "accounts" | "sessions";
+        RelationName: "accounts" | "sessions" | "Assignment";
+        ListRelations: "accounts" | "sessions" | "Assignment";
         Relations: {
             accounts: {
                 Shape: Account[];
@@ -53,6 +53,10 @@ export default interface PrismaTypes {
             sessions: {
                 Shape: Session[];
                 Types: PrismaTypes["Session"];
+            };
+            Assignment: {
+                Shape: Assignment[];
+                Types: PrismaTypes["Assignment"];
             };
         };
     };
@@ -67,5 +71,22 @@ export default interface PrismaTypes {
         RelationName: never;
         ListRelations: never;
         Relations: {};
+    };
+    Assignment: {
+        Name: "Assignment";
+        Shape: Assignment;
+        Include: Prisma.AssignmentInclude;
+        Select: Prisma.AssignmentSelect;
+        OrderBy: Prisma.AssignmentOrderByWithRelationInput;
+        WhereUnique: Prisma.AssignmentWhereUniqueInput;
+        Where: Prisma.AssignmentWhereInput;
+        RelationName: "creator";
+        ListRelations: never;
+        Relations: {
+            creator: {
+                Shape: User;
+                Types: PrismaTypes["User"];
+            };
+        };
     };
 }

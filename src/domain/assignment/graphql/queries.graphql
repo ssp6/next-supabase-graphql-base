@@ -1,0 +1,8 @@
+query MyAssignments {
+    myAssignments {
+        id
+        name
+        pdfFileUrl
+        createdAt
+    }
+}

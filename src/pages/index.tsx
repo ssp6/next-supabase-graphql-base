@@ -1,4 +1,4 @@
-import { useAllUsersQuery } from '@/domain/graphql/generated'
+import { useMeQuery } from '@/domain/graphql/generated'
 import styles from '@/styles/Home.module.css'
 import { Inter } from '@next/font/google'
 import { signIn, useSession } from 'next-auth/react'
@@ -10,8 +10,9 @@ const inter = Inter({ subsets: ['latin'] })
 export default function Home() {
   const { data: session } = useSession()
   // TODO: Remove, just for testing
-  const [{ data: users, error, fetching }] = useAllUsersQuery()
-  console.log('users', users, 'error', error, 'fetching', fetching)
+  const [{ data: user, error, fetching }] = useMeQuery({
+    pause: !session,
+  })
 
   return (
     <>
@@ -23,10 +24,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.description}>
-          <p>
-            Get started by editing&nbsp;
-            <code className={styles.code}>src/pages/index.tsx</code>
-          </p>
+          <p>Hey, {user?.me?.email ?? 'you are not logged in'}!</p>
           <div>
             <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
