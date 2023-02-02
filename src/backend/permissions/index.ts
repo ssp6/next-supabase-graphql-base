@@ -1,5 +1,6 @@
 import { allow, shield } from 'graphql-shield'
 import { isAuthenticated } from './rules/isAuthenticated'
+import { isUser } from './rules/isUser'
 
 export const permissions = shield({
   Query: {
@@ -8,5 +9,8 @@ export const permissions = shield({
   },
   Mutation: {
     '*': isAuthenticated,
+  },
+  User: {
+    email: isUser,
   },
 })

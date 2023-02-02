@@ -60,7 +60,7 @@ const Assignments: NextPageWithLayout = () => {
       <h2>My assignments</h2>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {assignments?.myAssignments.map((assignment) => (
-          <div key={assignment.id} style={{ background: 'lightskyblue' }}>
+          <div key={assignment.id} style={{ background: 'white', padding: '12px 24px' }}>
             <h3>{assignment.name}</h3>
             <p>{assignment.pdfFileUrl}</p>
             <p>{assignment.createdAt}</p>
