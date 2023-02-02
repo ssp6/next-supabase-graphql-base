@@ -1,7 +1,7 @@
 import { useMeQuery } from '@/domain/graphql/generated'
 import styles from '@/styles/Home.module.css'
 import { Inter } from '@next/font/google'
-import { signIn, useSession } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 
@@ -63,7 +63,7 @@ export default function Home() {
             className={styles.card}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => signIn()}
+            onClick={() => (session ? signOut() : signIn())}
           >
             <h2 className={inter.className}>
               {session ? 'Sign out' : 'Sign in'} <span>-&gt;</span>
