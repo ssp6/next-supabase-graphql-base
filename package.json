@@ -11,6 +11,7 @@
     "api:start": "supabase start",
     "api:stop": "supabase stop",
     "db:migrate:prisma": "dotenv -e .env.local -- npx prisma migrate dev --schema=./src/backend/prisma/schema.prisma",
+    "db:diff": "supabase db diff",
     "db:migrate:supabase": "supabase db diff migration_name -f",
     "db:migrate:local": "yarn db:migrate:prisma && yarn db:migrate:supabase",
     "db:push:prod": "supabase db push",
