@@ -14,13 +14,14 @@ import { graphqlGetServerSideProps } from '../domain/graphql/graphqlGetServerSid
  */
 const Assignments: NextPageWithLayout = () => {
   const [{ data: assignments, fetching: assignmentsLoading, error: assignmentsError }] =
-    useMyAssignmentsQuery()
+    useMyAssignmentsQuery({
+      requestPolicy: 'cache-and-network',
+    })
   const [
     { fetching: createAssignmentLoading, error: createAssignmentError },
     createAssignmentMutation,
   ] = useCreateAssignmentMutation()
 
-  const loading = assignmentsLoading || createAssignmentLoading
   const error = assignmentsError || createAssignmentError
 
   if (error) {
@@ -54,7 +55,7 @@ const Assignments: NextPageWithLayout = () => {
       }}
     >
       <h1>Assignments!</h1>
-      {loading ? (
+      {assignmentsLoading ? (
         <h2>Loading...</h2>
       ) : (
         <>
@@ -64,7 +65,11 @@ const Assignments: NextPageWithLayout = () => {
           >
             <input type="text" placeholder="Assignment name" name={'assignment-name'} />
             <input type="text" placeholder="Assignment description" name={'pdfFileUrl'} />
-            <input type="submit" value="Create" />
+            <input
+              type="submit"
+              value={createAssignmentLoading ? 'Loading' : 'Create'}
+              disabled={createAssignmentLoading}
+            />
           </form>
 
           <h2>My assignments</h2>
@@ -94,4 +99,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   }
 }
 
-export default withUrqlClient(() => ({ url: GraphqlUrl }))(Assignments)
+export default withUrqlClient(() => ({
+  url: GraphqlUrl,
+}))(Assignments)
