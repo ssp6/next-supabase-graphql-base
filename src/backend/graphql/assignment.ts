@@ -1,4 +1,5 @@
 import { getUserIdFromRequest } from '../auth/getUserIdFromRequest'
+import prisma from '../prisma'
 import { BuilderType } from './schema'
 
 /**
