@@ -1,7 +1,6 @@
-import { useMeQuery } from '@/domain/graphql/generated'
 import styles from '@/styles/Home.module.css'
 import { Inter } from '@next/font/google'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { signIn, signOut } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 
