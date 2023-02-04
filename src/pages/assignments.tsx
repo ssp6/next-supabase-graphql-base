@@ -2,12 +2,7 @@ import { GraphqlUrl } from '@/domain/graphql/graphql-url'
 import { GetServerSideProps, NextPageWithLayout } from 'next'
 import { withUrqlClient } from 'next-urql'
 import { FormEvent } from 'react'
-import {
-  MyAssignmentsDocument,
-  useCreateAssignmentMutation,
-  useMyAssignmentsQuery,
-} from '../domain/graphql/generated'
-import { graphqlGetServerSideProps } from '../domain/graphql/graphqlGetServerSideProps'
+import { useCreateAssignmentMutation, useMyAssignmentsQuery } from '../domain/graphql/generated'
 
 /**
  * A basic page for creating an assignment and listing all of your assignments
@@ -89,12 +84,12 @@ const Assignments: NextPageWithLayout = () => {
 }
 
 export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { client, ssrCache } = graphqlGetServerSideProps({ req })
-  await client?.query(MyAssignmentsDocument, {}).toPromise()
+  // const { client, ssrCache } = graphqlGetServerSideProps({ req })
+  // await client?.query(MyAssignmentsDocument, {}).toPromise()
 
   return {
     props: {
-      urqlState: ssrCache.extractData(),
+      // urqlState: ssrCache.extractData(),
     },
   }
 }
