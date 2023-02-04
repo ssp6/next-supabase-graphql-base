@@ -1,20 +1,26 @@
 import { GraphqlUrl } from '@/domain/graphql/graphql-url'
-import { GetServerSideProps, NextPageWithLayout } from 'next'
+import { NextPageWithLayout } from 'next'
+import { useSession } from 'next-auth/react'
 import { withUrqlClient } from 'next-urql'
 import { FormEvent } from 'react'
 import {
-  MyAssignmentsDocument,
   useCreateAssignmentMutation,
+  useMeQuery,
   useMyAssignmentsQuery,
 } from '../domain/graphql/generated'
-import { graphqlGetServerSideProps } from '../domain/graphql/graphqlGetServerSideProps'
 
 /**
  * A basic page for creating an assignment and listing all of your assignments
  */
 const Assignments: NextPageWithLayout = () => {
-  const [{ data: assignments, fetching: assignmentsLoading, error: assignmentsError }] =
+  const [{ data: assignments, fetching: assignmentsLoading, error: assignmentsError }, fetch] =
     useMyAssignmentsQuery()
+  const { data: session } = useSession()
+  // TODO: Remove, just for testing
+  const [{ data: user, fetching }] = useMeQuery({
+    pause: !session,
+  })
+  console.log('user', user)
   const [
     { fetching: createAssignmentLoading, error: createAssignmentError },
     createAssignmentMutation,
@@ -27,7 +33,7 @@ const Assignments: NextPageWithLayout = () => {
     console.error(error)
   }
 
-  const createAssignment = (e: FormEvent<HTMLFormElement>) => {
+  const createAssignment = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
     const assignmentName = formData.get('assignment-name')
@@ -36,10 +42,22 @@ const Assignments: NextPageWithLayout = () => {
       return alert('Please fill out all fields')
     }
 
-    createAssignmentMutation({
+    await createAssignmentMutation({
       name: assignmentName.toString(),
       pdfFileUrl: pdfFileUrl.toString(),
     })
+  }
+
+  const callFetch = async () => {
+    console.log('fetching')
+    try {
+      await fetch({
+        requestPolicy: 'network-only',
+        url: GraphqlUrl,
+      })
+    } catch (e) {
+      console.error(e)
+    }
   }
   return (
     <div
@@ -58,6 +76,7 @@ const Assignments: NextPageWithLayout = () => {
         <h2>Loading...</h2>
       ) : (
         <>
+          <button onClick={() => callFetch()}>Refetch</button>
           <form
             onSubmit={createAssignment}
             style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}
@@ -83,15 +102,15 @@ const Assignments: NextPageWithLayout = () => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const { client, ssrCache } = graphqlGetServerSideProps({ req })
-  await client?.query(MyAssignmentsDocument, {}).toPromise()
-
-  return {
-    props: {
-      urqlState: ssrCache.extractData(),
-    },
-  }
-}
+// export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+//   const { client, ssrCache } = graphqlGetServerSideProps({ req })
+//   await client?.query(MyAssignmentsDocument, {}).toPromise()
+//
+//   return {
+//     props: {
+//       urqlState: ssrCache.extractData(),
+//     },
+//   }
+// }
 
 export default withUrqlClient(() => ({ url: GraphqlUrl }))(Assignments)

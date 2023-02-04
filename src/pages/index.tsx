@@ -8,12 +8,6 @@ import Image from 'next/image'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
-  const { data: session } = useSession()
-  // TODO: Remove, just for testing
-  const [{ data: user, error, fetching }] = useMeQuery({
-    pause: !session,
-  })
-
   return (
     <>
       <Head>
