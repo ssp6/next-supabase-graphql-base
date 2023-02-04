@@ -17,7 +17,7 @@ export type Scalars = {
 }
 
 export type Assignment = {
-  __typename?: 'Assignment'
+  __typename: 'Assignment'
   createdAt: Scalars['Date']
   creator: User
   id: Scalars['ID']
@@ -26,7 +26,7 @@ export type Assignment = {
 }
 
 export type Mutation = {
-  __typename?: 'Mutation'
+  __typename: 'Mutation'
   createAssignment: Assignment
   updateUser: User
 }
@@ -42,7 +42,7 @@ export type MutationUpdateUserArgs = {
 }
 
 export type Query = {
-  __typename?: 'Query'
+  __typename: 'Query'
   assignment: Assignment
   me: User
   myAssignments: Array<Assignment>
@@ -53,7 +53,7 @@ export type QueryAssignmentArgs = {
 }
 
 export type User = {
-  __typename?: 'User'
+  __typename: 'User'
   createdAt: Scalars['Date']
   email?: Maybe<Scalars['String']>
   id: Scalars['ID']
@@ -66,9 +66,9 @@ export type CreateAssignmentMutationVariables = Exact<{
 }>
 
 export type CreateAssignmentMutation = {
-  __typename?: 'Mutation'
+  __typename: 'Mutation'
   createAssignment: {
-    __typename?: 'Assignment'
+    __typename: 'Assignment'
     id: string
     name: string
     pdfFileUrl: string
@@ -79,9 +79,9 @@ export type CreateAssignmentMutation = {
 export type MyAssignmentsQueryVariables = Exact<{ [key: string]: never }>
 
 export type MyAssignmentsQuery = {
-  __typename?: 'Query'
+  __typename: 'Query'
   myAssignments: Array<{
-    __typename?: 'Assignment'
+    __typename: 'Assignment'
     id: string
     name: string
     pdfFileUrl: string
@@ -92,8 +92,8 @@ export type MyAssignmentsQuery = {
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
 export type MeQuery = {
-  __typename?: 'Query'
-  me: { __typename?: 'User'; id: string; name?: string | null; email?: string | null }
+  __typename: 'Query'
+  me: { __typename: 'User'; id: string; name?: string | null; email?: string | null }
 }
 
 export const CreateAssignmentDocument = gql`

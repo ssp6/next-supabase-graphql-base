@@ -11,6 +11,7 @@ const config: CodegenConfig = {
         withHooks: true,
         withHOC: false,
         withComponent: false,
+        nonOptionalTypename: true,
       },
       hooks: { afterOneFileWrite: ['yarn eslint src/domain/graphql --fix'] },
     },
