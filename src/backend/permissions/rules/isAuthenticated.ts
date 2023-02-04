@@ -6,6 +6,7 @@ import { getUserIdFromRequest } from '../../auth/getUserIdFromRequest'
  */
 export const isAuthenticated = rule({ cache: 'contextual' })(
   async (_parent, _args, context, _info) => {
+    console.log('context', context)
     const userId = await getUserIdFromRequest(context)
     return Boolean(userId)
   },
