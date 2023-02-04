@@ -1,12 +1,13 @@
 import styles from '@/styles/Home.module.css'
 import { Inter } from '@next/font/google'
-import { signIn, signOut } from 'next-auth/react'
+import { signIn, signOut, useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Image from 'next/image'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const { data: session } = useSession()
   return (
     <>
       <Head>
@@ -17,7 +18,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <div className={styles.description}>
-          <p>Hey, {user?.me?.email ?? 'you are not logged in'}!</p>
+          <p>Hey, {session?.user?.email ?? 'you are not logged in'}!</p>
           <div>
             <a
               href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
