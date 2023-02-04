@@ -44,15 +44,21 @@ export const addAssignmentToGraphql = (builder: BuilderType) => {
     t.prismaField({
       type: ['Assignment'],
       resolve: async (query, _parent, _args, context, _info) => {
+        console.log('Hit myAssignments')
         const userId = await getUserIdFromRequest(context)
+        console.log('userId', userId)
         if (!userId) throw new Error('Not authenticated')
-
-        return prisma.assignment.findMany({
-          ...query,
-          where: {
-            creatorId: userId,
-          },
-        })
+        try {
+          return prisma.assignment.findMany({
+            ...query,
+            where: {
+              creatorId: userId,
+            },
+          })
+        } catch (error) {
+          console.log('assignment throws error', error)
+          return []
+        }
       },
     }),
   )
