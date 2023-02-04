@@ -23,6 +23,8 @@ export const addUserToGraphql = (builder: BuilderType) => {
       type: 'User',
       resolve: async (query, _parent, _args, context, _info) => {
         const userId = await getUserIdFromRequest(context)
+        if (!userId) throw new Error('Not authenticated')
+
         return prisma.user.findUniqueOrThrow({
           ...query,
           where: {
