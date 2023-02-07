@@ -5,6 +5,11 @@ import { GetServerSidePropsContext } from 'next/types'
 import { cacheExchange, dedupExchange, ssrExchange } from 'urql'
 
 /**
+ * NOTE: This should only be used on routes that do not REQUIRE authentication
+ *       This due to getServerSideProps being slow on 1st render. And getServerSideProps
+ *       only really being useful for SEO. If behind authentication, then don't
+ *       care about SEO any way
+ *
  * Helper function for calling graphql queries in getServerSideProps
  *
  * Apply using:
