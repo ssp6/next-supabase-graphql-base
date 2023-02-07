@@ -1,12 +1,26 @@
-import '@/styles/globals.css'
+import { MuiThemeProvider } from '@/styles/MuiThemeProvider'
+import { EmotionCache } from '@emotion/react'
+import { NextPageWithLayout } from 'next'
 import { SessionProvider } from 'next-auth/react'
-import type { AppProps } from 'next/app'
+import { AppProps } from 'next/app'
 
-function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+type AppPropsWithLayout<Props = any> = AppProps<Props> & {
+  Component: NextPageWithLayout
+  emotionCache?: EmotionCache
+}
+
+function App({
+  Component,
+  emotionCache,
+  pageProps: { session, ...pageProps },
+}: AppPropsWithLayout) {
+  // Use the layout defined at the page level, if available
+  const getLayout = Component.getLayout || ((page) => page)
+
   return (
-    <SessionProvider session={session}>
-      <Component {...pageProps} />
-    </SessionProvider>
+    <MuiThemeProvider emotionCache={emotionCache}>
+      <SessionProvider session={session}>{getLayout(<Component {...pageProps} />)}</SessionProvider>
+    </MuiThemeProvider>
   )
 }
 
