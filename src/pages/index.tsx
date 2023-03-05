@@ -1,13 +1,13 @@
 import { Box, Button, Container, Typography } from '@mui/material'
-import { Inter } from '@next/font/google'
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
 import Head from 'next/head'
 import Link from 'next/link'
-
-const inter = Inter({ subsets: ['latin'] })
+import { useRouter } from 'next/router'
 
 export default function Home() {
-  const { data: session } = useSession()
+  const session = useSession()
+  const supabaseClient = useSupabaseClient()
+  const router = useRouter()
 
   return (
     <>
@@ -36,8 +36,7 @@ export default function Home() {
             </Link>
             <Button
               variant={'outlined'}
-              href="/"
-              onClick={() => (session ? signOut() : signIn())}
+              onClick={() => (session ? supabaseClient.auth.signOut() : router.push('/log-in'))}
               sx={{ mt: 2 }}
             >
               Sign {session ? 'out' : 'in'}
