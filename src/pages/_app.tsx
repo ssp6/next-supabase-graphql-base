@@ -5,6 +5,7 @@ import { Session, SessionContextProvider } from '@supabase/auth-helpers-react'
 import { NextPageWithLayout } from 'next'
 import { AppProps } from 'next/app'
 import { useState } from 'react'
+import '../styles/globals.css'
 
 type AppPropsWithLayout<Props = undefined> = AppProps<Props> & {
   Component: NextPageWithLayout
