@@ -14,4 +14,13 @@ export const materialUiTheme = createTheme({
   typography: {
     fontFamily: openSans.style.fontFamily,
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+    },
+  },
 })
