@@ -26,3 +26,4 @@ To make use of any changes in the db you will likely need to make changes to the
 First edit the `src/backend/graphql/schema.graphql` file to add any new types or fields.
 
 Then update the queries/mutations you're going to use in the app (these are in `src/domain/**/graphql/`)
+and run `yarn graphql:generate` to update the graphql types.

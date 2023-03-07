@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "jest",
     "lint": "next lint",
     "lint:fix": "next lint --fix && yarn prisma:format",
     "api:start": "supabase start",
