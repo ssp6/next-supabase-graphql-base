@@ -1,6 +1,5 @@
 import { allow, shield } from 'graphql-shield'
 import { isAuthenticated } from './rules/isAuthenticated'
-import { isUser } from './rules/isUser'
 
 export const permissions = shield({
   Query: {
@@ -11,6 +10,6 @@ export const permissions = shield({
     '*': isAuthenticated,
   },
   User: {
-    email: isUser,
+    // privateField: isUser, // TODO: Uncomment this line for any fields that should be private
   },
 })

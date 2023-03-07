@@ -28,6 +28,7 @@ export type Assignment = {
 export type Mutation = {
   __typename: 'Mutation'
   createAssignment: Assignment
+  createUser: User
   updateUser: User
 }
 
@@ -36,8 +37,11 @@ export type MutationCreateAssignmentArgs = {
   pdfFileUrl: Scalars['String']
 }
 
+export type MutationCreateUserArgs = {
+  name: Scalars['String']
+}
+
 export type MutationUpdateUserArgs = {
-  email?: InputMaybe<Scalars['String']>
   name?: InputMaybe<Scalars['String']>
 }
 
@@ -55,7 +59,6 @@ export type QueryAssignmentArgs = {
 export type User = {
   __typename: 'User'
   createdAt: Scalars['Date']
-  email?: Maybe<Scalars['String']>
   id: Scalars['ID']
   name?: Maybe<Scalars['String']>
 }
@@ -89,11 +92,20 @@ export type MyAssignmentsQuery = {
   }>
 }
 
+export type CreateUserMutationVariables = Exact<{
+  name: Scalars['String']
+}>
+
+export type CreateUserMutation = {
+  __typename: 'Mutation'
+  createUser: { __typename: 'User'; id: string; name?: string | null }
+}
+
 export type MeQueryVariables = Exact<{ [key: string]: never }>
 
 export type MeQuery = {
   __typename: 'Query'
-  me: { __typename: 'User'; id: string; name?: string | null; email?: string | null }
+  me: { __typename: 'User'; id: string; name?: string | null }
 }
 
 export const CreateAssignmentDocument = gql`
@@ -131,12 +143,23 @@ export function useMyAssignmentsQuery(
     ...options,
   })
 }
+export const CreateUserDocument = gql`
+  mutation CreateUser($name: String!) {
+    createUser(name: $name) {
+      id
+      name
+    }
+  }
+`
+
+export function useCreateUserMutation() {
+  return Urql.useMutation<CreateUserMutation, CreateUserMutationVariables>(CreateUserDocument)
+}
 export const MeDocument = gql`
   query Me {
     me {
       id
       name
-      email
     }
   }
 `

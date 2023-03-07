@@ -11,7 +11,6 @@ export const addUserToGraphql = (builder: BuilderType) => {
     fields: (t) => ({
       id: t.exposeID('id'),
       name: t.exposeString('name', { nullable: true }),
-      email: t.exposeString('email', { nullable: true }),
       createdAt: t.expose('createdAt', {
         type: 'Date',
       }),
@@ -35,12 +34,30 @@ export const addUserToGraphql = (builder: BuilderType) => {
     }),
   )
 
+  builder.mutationField('createUser', (t) =>
+    t.prismaField({
+      type: 'User',
+      args: {
+        name: t.arg.string({ required: true }),
+      },
+      resolve: async (query, _parent, args, context, _info) => {
+        const authUserId = await getUserIdFromRequest(context)
+        if (!authUserId) throw new Error('Not authorized!')
+        return prisma.user.create({
+          data: {
+            id: authUserId,
+            name: args.name,
+          },
+        })
+      },
+    }),
+  )
+
   builder.mutationField('updateUser', (t) =>
     t.prismaField({
       type: 'User',
       args: {
         name: t.arg.string({ required: false }),
-        email: t.arg.string({ required: false }),
       },
       resolve: async (query, _parent, args, context, _info) => {
         const userId = await getUserIdFromRequest(context)
@@ -52,7 +69,6 @@ export const addUserToGraphql = (builder: BuilderType) => {
           },
           data: {
             ...(args.name && { name: args.name }),
-            ...(args.email && { email: args.email }),
           },
         })
       },
