@@ -1,35 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
 ## Getting Started
-
 1. Set the `.env.local` file with variables from `mock.env` file
+2. Start the Supabase API server and db with `yarn api:start`
+3. Update the local db with `yarn db:migrate:prisma`
+4. Ensure have db types using `prisma db:generate`
+5. Start the app! `yarn dev`
 
-```bash
-yarn api:start # Requires Docker running
-yarn dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+View the app - [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+View the supabase dashboard - [http://localhost:54323](http://localhost:54323)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Updating the db
+To update the db first make changes to the prisma schema file at `src/backend/prisma/schema.prisma`
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+Then run `yarn db:migrate:prisma` to update the db.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+To create a supabase migration file run `yarn db:migrate:supabase ${NAME_OF_MIGRATION}`
 
-## Learn More
+It's a bit complex but there are 2 migration files, one for prisma and one for supabase. 
+The supabase migration file is what will be used to update the db on the supabase server.
 
-To learn more about Next.js, take a look at the following resources:
+### GraphQL
+To make use of any changes in the db you will likely need to make changes to the graphql.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+First edit the `src/backend/graphql/schema.graphql` file to add any new types or fields.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Then update the queries/mutations you're going to use in the app (these are in `src/domain/**/graphql/`)
