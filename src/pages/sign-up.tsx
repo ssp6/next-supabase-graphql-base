@@ -1,15 +1,15 @@
 import { LoadingButton } from '@mui/lab'
 import { Alert, Box, Button, Container, TextField } from '@mui/material'
-import { useSession, useSupabaseClient } from '@supabase/auth-helpers-react'
-import { withUrqlClient } from "next-urql"
+import { useSupabaseClient } from '@supabase/auth-helpers-react'
+import { withUrqlClient } from 'next-urql'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { CombinedError } from 'urql'
 import validator from 'validator'
 import { useCreateUserMutation } from '../domain/graphql/generated'
-import { GraphqlUrl } from "../domain/graphql/graphql-url"
+import { GraphqlUrl } from '../domain/graphql/graphql-url'
 
 type FormData = {
   email: string
