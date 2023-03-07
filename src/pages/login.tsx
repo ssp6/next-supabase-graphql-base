@@ -16,7 +16,7 @@ type FormData = {
  * Component for UI to sign-up and log-in
  * Users Auth UI helpers but these can be replaced
  */
-const LogIn = () => {
+const Login = () => {
   const [loading, setLoading] = useState<boolean>(false)
   const [loginError, setLoginError] = useState<string | null>(null)
   const {
@@ -108,4 +108,4 @@ const LogIn = () => {
   )
 }
 
-export default LogIn
+export default Login
