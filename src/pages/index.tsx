@@ -36,7 +36,7 @@ export default function Home() {
             </Link>
             <Button
               variant={'outlined'}
-              onClick={() => (session ? supabaseClient.auth.signOut() : router.push('/log-in'))}
+              onClick={() => (session ? supabaseClient.auth.signOut() : router.push('/login'))}
               sx={{ mt: 2 }}
             >
               Sign {session ? 'out' : 'in'}

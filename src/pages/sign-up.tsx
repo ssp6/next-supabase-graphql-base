@@ -114,7 +114,7 @@ const SignUp = () => {
         >
           Sign-up
         </LoadingButton>
-        <Link href={'/log-in'} passHref style={{ width: '100%' }}>
+        <Link href={'/login'} passHref style={{ width: '100%' }}>
           <Button variant={'text'} fullWidth>
             Go to login page
           </Button>
