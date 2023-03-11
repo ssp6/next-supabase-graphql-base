@@ -1,15 +1,20 @@
 import { allow, shield } from 'graphql-shield'
 import { isAuthenticated } from './rules/isAuthenticated'
 
-export const permissions = shield({
-  Query: {
-    '*': isAuthenticated,
-    assignment: allow,
+export const permissions = shield(
+  {
+    Query: {
+      '*': isAuthenticated,
+      assignment: allow,
+    },
+    Mutation: {
+      '*': isAuthenticated,
+    },
+    User: {
+      // privateField: isUser, // TODO: Uncomment this line for any fields that should be private
+    },
   },
-  Mutation: {
-    '*': isAuthenticated,
+  {
+    allowExternalErrors: true,
   },
-  User: {
-    // privateField: isUser, // TODO: Uncomment this line for any fields that should be private
-  },
-})
+)

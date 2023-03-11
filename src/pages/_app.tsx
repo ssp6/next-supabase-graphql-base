@@ -12,6 +12,18 @@ type AppPropsWithLayout<Props = undefined> = AppProps<Props> & {
   emotionCache?: EmotionCache
 }
 
+const getBaseUrl = () => {
+  if (process.env.VERCEL_URL) {
+    return process.env.VERCEL_URL
+  }
+
+  if (typeof window !== 'undefined') {
+    return window.location.origin
+  }
+
+  return 'http://localhost:3000'
+}
+
 function App({
   Component,
   emotionCache,
@@ -19,7 +31,13 @@ function App({
 }: AppPropsWithLayout<{
   initialSession: Session
 }>) {
-  const [supabaseClient] = useState(() => createBrowserSupabaseClient())
+  const [supabaseClient] = useState(() =>
+    createBrowserSupabaseClient({
+      // Supabase is proxied through the Next.js API route to make secure
+      supabaseUrl: getBaseUrl() + '/api/auth',
+      supabaseKey: 'non-valid-supabase-key',
+    }),
+  )
 
   // Use the layout defined at the page level, if available
   const getLayout = Component.getLayout || ((page) => page)
